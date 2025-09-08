@@ -1,0 +1,37 @@
+#!/bin/bash
+
+echo "=== Debug-Techniken ==="
+
+# Debug-Modus aktivieren
+set -x   # Zeigt alle ausgeführten Befehle
+
+name="Max"
+alter=25
+
+# Debug-Modus deaktivieren
+set +x
+
+echo "Name: $name, Alter: $alter"
+
+# Funktion zum Debuggen einzelner Variablen
+debug_variable() {
+    local var_name="$1"
+    # Indirekte Referenz (Expansion von Variablenname)
+    local var_value="${!var_name}"
+
+    if [ -z "$var_value" ]; then
+        echo "Variable '$var_name' ist leer oder nicht gesetzt"
+    else
+        echo "Variable '$var_name' = '$var_value'"
+    fi
+}
+
+# Test mit vorhandenen und nicht vorhandenen Variablen
+debug_variable "name"
+debug_variable "alter"
+debug_variable "nicht_existiert"
+
+# Alle gesetzten Variablen anzeigen (gefiltert)
+echo
+echo "=== Alle lokalen Variablen (Beispiel) ==="
+set | grep "^[a-z]" | head -5
